@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Cloud Heart</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial;
+      background: linear-gradient(#87CEEB, #ffffff);
+    }
+
+    #login {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    canvas {
+      display: none;
+    }
+
+    #text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      font-weight: bold;
+      color: pink;
+      text-shadow: 0 0 10px rgba(255,0,100,0.7);
+      display: none;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="login">
+  <h2>Nhập mật khẩu</h2>
+  <input type="password" id="password" placeholder="Password">
+  <br><br>
+  <button onclick="checkPass()">Vào</button>
+  <p id="error" style="color:red;"></p>
+</div>
+
+<canvas id="canvas"></canvas>
+<div id="text">Iu Linh ❤️</div>
+
+<script>
+  const correctPassword = "2310"; // đổi mật khẩu tại đây
+
+  function checkPass() {
+    const input = document.getElementById("password").value;
+    if (input === correctPassword) {
+      document.getElementById("login").style.display = "none";
+      const canvas = document.getElementById("canvas");
+      canvas.style.display = "block";
+      startAnimation();
+    } else {
+      document.getElementById("error").innerText = "Sai mật khẩu!";
+    }
+  }
+
+  function startAnimation() {
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const text = document.getElementById("text");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let clouds = [];
+
+    for (let i = 0; i < 150; i++) {
+      clouds.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height
+      });
+    }
+
+    let formingHeart = false;
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+
+      clouds.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function update() {
+      clouds.forEach((c, i) => {
+        if (formingHeart) {
+          let t = (i / clouds.length) * Math.PI * 2;
+          let heartX = 16 * Math.pow(Math.sin(t), 3);
+          let heartY = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+
+          let scale = 10;
+          let targetX = canvas.width/2 + heartX * scale;
+          let targetY = canvas.height/2 + heartY * scale;
+
+          c.x += (targetX - c.x) * 0.05;
+          c.y += (targetY - c.y) * 0.05;
+        } else {
+          c.x += Math.random() - 0.5;
+          c.y += Math.random() - 0.5;
+        }
+      });
+
+      // hiện chữ khi tạo trái tim
+      if (formingHeart) {
+        text.style.display = "block";
+      } else {
+        text.style.display = "none";
+      }
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    canvas.addEventListener("mousedown", () => formingHeart = true);
+    canvas.addEventListener("mouseup", () => formingHeart = false);
+    canvas.addEventListener("touchstart", () => formingHeart = true);
+    canvas.addEventListener("touchend", () => formingHeart = false);
+
+    loop();
+  }
+</script>
+
+</body>
+</html>
