@@ -12,12 +12,12 @@ body {
   background: black;
 }
 
-/* 🌌 CANVAS nền */
+/* 🌌 CANVAS */
 canvas {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 0; /* nằm dưới */
+  z-index: 0;
 }
 
 /* 💖 LOGIN */
@@ -32,7 +32,7 @@ canvas {
   border-radius: 20px;
   text-align: center;
   color: white;
-  z-index: 10; /* nằm trên */
+  z-index: 999;
 }
 
 #login input {
@@ -65,14 +65,14 @@ canvas {
     0 0 30px #ff6fa5,
     0 0 60px #ff6fa5;
   display: none;
-  z-index: 5;
+  z-index: 10;
 }
 
 /* 💥 HEART */
 .heart {
   position: absolute;
   pointer-events: none;
-  z-index: 20;
+  z-index: 1000;
 }
 </style>
 </head>
@@ -96,21 +96,36 @@ canvas {
 <script>
 const correctPassword = "2310";
 
+/* ✅ FIX LOGIN CHUẨN */
 function checkPass() {
-  if (password.value === correctPassword) {
-    login.style.display = "none";
-    text.style.display = "block";
+  const passwordInput = document.getElementById("password");
+  const loginBox = document.getElementById("login");
+  const textBox = document.getElementById("text");
+  const errorBox = document.getElementById("error");
+
+  if (passwordInput.value === correctPassword) {
+    loginBox.style.display = "none";
+    textBox.style.display = "block";
   } else {
-    error.innerText = "Sai rồi 😭";
+    errorBox.innerText = "Sai rồi 😭";
   }
 }
+
+/* đảm bảo login luôn hiện */
+window.onload = () => {
+  document.getElementById("login").style.display = "block";
+};
 
 /* 🌌 GALAXY */
 const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
 
 let stars = [];
 for (let i = 0; i < 400; i++) {
@@ -135,11 +150,10 @@ let time = 0;
 function draw() {
   time += 0.01;
 
-  /* nền mờ */
   ctx.fillStyle = "rgba(0,0,20,0.3)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  /* sao */
+  /* ⭐ sao */
   stars.forEach(s=>{
     ctx.fillStyle = "white";
     ctx.beginPath();
@@ -150,7 +164,7 @@ function draw() {
     if(s.y>canvas.height) s.y=0;
   });
 
-  /* nebula glow */
+  /* 🌈 nebula */
   let g = ctx.createRadialGradient(
     canvas.width/2, canvas.height/2, 50,
     canvas.width/2, canvas.height/2, 500
@@ -178,7 +192,6 @@ function draw() {
 
   requestAnimationFrame(draw);
 }
-
 draw();
 
 /* 💥 CLICK NỔ TIM */
@@ -200,12 +213,6 @@ document.addEventListener("click",e=>{
 
     setTimeout(()=>h.remove(),1000);
   }
-});
-
-/* 📱 resize fix */
-window.addEventListener("resize",()=>{
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
 });
 </script>
 
