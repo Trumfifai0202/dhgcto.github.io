@@ -12,6 +12,7 @@ body {
   background: black;
 }
 
+/* 🌌 CANVAS */
 canvas {
   position: fixed;
   top: 0;
@@ -19,14 +20,15 @@ canvas {
   z-index: 0;
 }
 
-/* LOGIN */
+/* 💖 LOGIN (FIX RUNG) */
 #login {
-  position: absolute;
+  position: fixed; /* quan trọng */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
+  transform: translate(-50%, -50%) translateZ(0);
+  will-change: transform;
+
+  background: rgba(0,0,0,0.6); /* bỏ blur cho mượt */
   padding: 25px;
   border-radius: 20px;
   text-align: center;
@@ -34,9 +36,26 @@ canvas {
   z-index: 999;
 }
 
-/* TEXT */
+#login input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+#login button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #ff6fa5;
+  color: white;
+  cursor: pointer;
+}
+
+/* 💬 TEXT */
 #text {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -48,7 +67,7 @@ canvas {
 
 /* hint */
 #hint {
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   width: 100%;
   text-align: center;
@@ -58,7 +77,7 @@ canvas {
 
 /* music btn */
 #musicBtn {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
   z-index: 20;
@@ -68,7 +87,7 @@ canvas {
   cursor: pointer;
 }
 
-/* HEART */
+/* 💖 HEART */
 .heart {
   position: absolute;
   pointer-events: none;
@@ -118,7 +137,7 @@ function checkPass(){
   }
 }
 
-/* 💌 typing text */
+/* typing */
 function startTyping(){
   let txt="Iu Linh 💕";
   let i=0;
@@ -134,7 +153,7 @@ function startTyping(){
   type();
 }
 
-/* 🎵 music toggle */
+/* music */
 let playing=true;
 musicBtn.onclick=()=>{
   if(playing){
@@ -193,7 +212,6 @@ function draw(){
     if(s.y>canvas.height)s.y=0;
   });
 
-  /* nebula */
   let g=ctx.createRadialGradient(
     canvas.width/2,canvas.height/2,50,
     canvas.width/2,canvas.height/2,500
@@ -203,7 +221,6 @@ function draw(){
   ctx.fillStyle=g;
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  /* heart galaxy */
   for(let i=0;i<200;i++){
     let t=(i/200)*Math.PI*2+time;
     let h=heart(t);
@@ -218,7 +235,7 @@ function draw(){
     ctx.fill();
   }
 
-  /* 🌠 sao băng */
+  /* sao băng */
   if(Math.random()<0.02){
     let x=Math.random()*canvas.width;
     let y=Math.random()*canvas.height/2;
@@ -234,7 +251,7 @@ function draw(){
 }
 draw();
 
-/* 💖 giữ tạo tim */
+/* giữ */
 let holding=false;
 onmousedown=()=>holding=true;
 onmouseup=()=>holding=false;
@@ -243,14 +260,14 @@ setInterval(()=>{
   if(holding) createHeart(innerWidth/2,innerHeight/2);
 },100);
 
-/* 💥 click nổ tim */
+/* click */
 onclick=e=>{
   for(let i=0;i<10;i++){
     createHeart(e.clientX,e.clientY);
   }
 };
 
-/* 💕 tim */
+/* tim */
 function createHeart(x,y){
   let h=document.createElement("div");
   h.className="heart";
@@ -263,7 +280,7 @@ function createHeart(x,y){
   setTimeout(()=>h.remove(),2000);
 }
 
-/* 💕 tim bay nền */
+/* tim bay */
 setInterval(()=>{
   createHeart(Math.random()*innerWidth,innerHeight);
 },300);
