@@ -12,13 +12,15 @@ body {
   background: black;
 }
 
+/* 🌌 CANVAS nền */
 canvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  z-index: 0; /* nằm dưới */
 }
 
-/* LOGIN */
+/* 💖 LOGIN */
 #login {
   position: absolute;
   top: 50%;
@@ -30,15 +32,27 @@ canvas {
   border-radius: 20px;
   text-align: center;
   color: white;
+  z-index: 10; /* nằm trên */
 }
 
 #login input {
   padding: 10px;
   border-radius: 10px;
   border: none;
+  outline: none;
 }
 
-/* TEXT */
+#login button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #ff6fa5;
+  color: white;
+  cursor: pointer;
+}
+
+/* 💬 TEXT */
 #text {
   position: absolute;
   top: 50%;
@@ -51,12 +65,21 @@ canvas {
     0 0 30px #ff6fa5,
     0 0 60px #ff6fa5;
   display: none;
+  z-index: 5;
+}
+
+/* 💥 HEART */
+.heart {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
 <div id="login">
   <h2>Login 💖</h2>
   <input type="password" id="password" placeholder="Nhập mật khẩu..."><br><br>
@@ -64,7 +87,10 @@ canvas {
   <p id="error"></p>
 </div>
 
+<!-- CANVAS -->
 <canvas id="c"></canvas>
+
+<!-- TEXT -->
 <div id="text">Iu Linh 💕</div>
 
 <script>
@@ -79,7 +105,7 @@ function checkPass() {
   }
 }
 
-/* 🌌 GALAXY ENGINE */
+/* 🌌 GALAXY */
 const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
@@ -96,7 +122,7 @@ for (let i = 0; i < 400; i++) {
   });
 }
 
-/* 💫 HEART SHAPE */
+/* 💖 HEART SHAPE */
 function heart(t){
   return {
     x: 16*Math.pow(Math.sin(t),3),
@@ -109,11 +135,11 @@ let time = 0;
 function draw() {
   time += 0.01;
 
-  /* nền fade */
+  /* nền mờ */
   ctx.fillStyle = "rgba(0,0,20,0.3)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  /* ⭐ sao */
+  /* sao */
   stars.forEach(s=>{
     ctx.fillStyle = "white";
     ctx.beginPath();
@@ -124,7 +150,7 @@ function draw() {
     if(s.y>canvas.height) s.y=0;
   });
 
-  /* 🌈 nebula glow */
+  /* nebula glow */
   let g = ctx.createRadialGradient(
     canvas.width/2, canvas.height/2, 50,
     canvas.width/2, canvas.height/2, 500
@@ -139,7 +165,6 @@ function draw() {
   /* 💖 HEART GALAXY */
   for(let i=0;i<200;i++){
     let t = (i/200)*Math.PI*2 + time;
-
     let h = heart(t);
 
     let x = canvas.width/2 + h.x*12;
@@ -161,7 +186,7 @@ document.addEventListener("click",e=>{
   for(let i=0;i<15;i++){
     let h=document.createElement("div");
     h.innerText="💖";
-    h.style.position="absolute";
+    h.className="heart";
     h.style.left=e.clientX+"px";
     h.style.top=e.clientY+"px";
     h.style.fontSize=(15+Math.random()*20)+"px";
@@ -175,6 +200,12 @@ document.addEventListener("click",e=>{
 
     setTimeout(()=>h.remove(),1000);
   }
+});
+
+/* 📱 resize fix */
+window.addEventListener("resize",()=>{
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 });
 </script>
 
