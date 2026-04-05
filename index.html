@@ -1,233 +1,157 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>💖 Kitty Love 💖</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(#ffd6e8, #e0f7ff);
-    }
+<meta charset="UTF-8">
+<title>💖 Galaxy Love 💖</title>
 
-    /* LOGIN */
-    #login {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at bottom, #2b1055, #000);
+}
 
-    #login h2 {
-      color: #ff6fa5;
-    }
+/* 🌌 CANVAS */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
-    #login input {
-      padding: 10px;
-      border: none;
-      border-radius: 12px;
-      background: #f3f3f3;
-      outline: none;
-    }
+/* LOGIN */
+#login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+}
 
-    #login button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 12px;
-      background: #ff9ecf;
-      color: white;
-      cursor: pointer;
-    }
+#login input {
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+}
 
-    #login button:hover {
-      background: #ff6fa5;
-    }
+#login button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #ff6fa5;
+  color: white;
+  cursor: pointer;
+}
 
-    .kitty {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
+/* TEXT */
+#text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: #ff9ecf;
+  text-shadow: 0 0 25px #ff6fa5;
+  display: none;
+}
 
-    canvas {
-      display: none;
-    }
+/* HEART */
+.heart {
+  position: absolute;
+  animation: floatUp linear forwards;
+}
 
-    #text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 48px;
-      font-weight: bold;
-      color: #ff6fa5;
-      text-shadow: 0 0 15px rgba(255,105,180,0.8);
-      display: none;
-      pointer-events: none;
-    }
-
-    #hint {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      color: #ff6fa5;
-      font-size: 14px;
-      display: none;
-    }
-
-    /* 💕 HEART FLOAT */
-    #hearts {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .heart {
-      position: absolute;
-      color: #ff6fa5;
-      animation: floatUp linear forwards;
-    }
-
-    @keyframes floatUp {
-      from {
-        transform: translateY(100vh) scale(1);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-10vh) scale(1.5);
-        opacity: 0;
-      }
-    }
-  </style>
+@keyframes floatUp {
+  to {
+    transform: translateY(-200px);
+    opacity: 0;
+  }
+}
+</style>
 </head>
+
 <body>
 
-<!-- HEART BACKGROUND -->
-<div id="hearts"></div>
-
-<!-- LOGIN -->
 <div id="login">
-  <div class="kitty">🎀🐱</div>
   <h2>Login 💖</h2>
-  <input type="password" id="password" placeholder="Nhập mật khẩu...">
-  <br><br>
+  <input type="password" id="password" placeholder="Nhập mật khẩu..."><br><br>
   <button onclick="checkPass()">Vào ✨</button>
-  <p id="error" style="color:#ff6fa5;"></p>
+  <p id="error"></p>
 </div>
 
-<canvas id="canvas"></canvas>
+<canvas id="stars"></canvas>
 <div id="text">Iu Linh 💕</div>
-<div id="hint">👉 giữ màn hình để hiện trái tim 💖</div>
 
 <script>
-  const correctPassword = "2310";
+const correctPassword = "2310";
 
-  function checkPass() {
-    const input = document.getElementById("password").value;
-    if (input === correctPassword) {
-      document.getElementById("login").style.display = "none";
-      const canvas = document.getElementById("canvas");
-      canvas.style.display = "block";
-      document.getElementById("hint").style.display = "block";
-      startAnimation();
-    } else {
-      document.getElementById("error").innerText = "Sai rồi 😭";
-    }
+function checkPass() {
+  if (document.getElementById("password").value === correctPassword) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("text").style.display = "block";
+  } else {
+    document.getElementById("error").innerText = "Sai rồi 😭";
   }
+}
 
-  function startAnimation() {
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    const text = document.getElementById("text");
+/* 🌌 STAR GALAXY */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    let clouds = [];
+let stars = [];
 
-    for (let i = 0; i < 150; i++) {
-      clouds.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height
-      });
-    }
+for (let i = 0; i < 300; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2,
+    speed: Math.random() * 0.5
+  });
+}
 
-    let formingHeart = false;
+function drawStars() {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#fff";
+  stars.forEach(s => {
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+    ctx.fill();
 
-      clouds.forEach(c => {
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, 4, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    }
+    s.y += s.speed;
+    if (s.y > canvas.height) s.y = 0;
+  });
 
-    function update() {
-      clouds.forEach((c, i) => {
-        if (formingHeart) {
-          let t = (i / clouds.length) * Math.PI * 2;
-          let heartX = 16 * Math.pow(Math.sin(t), 3);
-          let heartY = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+  requestAnimationFrame(drawStars);
+}
 
-          let scale = 10;
-          let targetX = canvas.width/2 + heartX * scale;
-          let targetY = canvas.height/2 + heartY * scale;
+drawStars();
 
-          c.x += (targetX - c.x) * 0.05;
-          c.y += (targetY - c.y) * 0.05;
-        } else {
-          c.x += Math.random() - 0.5;
-          c.y += Math.random() - 0.5;
-        }
-      });
-
-      text.style.display = formingHeart ? "block" : "none";
-    }
-
-    function loop() {
-      update();
-      draw();
-      requestAnimationFrame(loop);
-    }
-
-    canvas.addEventListener("mousedown", () => formingHeart = true);
-    canvas.addEventListener("mouseup", () => formingHeart = false);
-    canvas.addEventListener("touchstart", () => formingHeart = true);
-    canvas.addEventListener("touchend", () => formingHeart = false);
-
-    loop();
+/* 💥 CLICK NỔ TIM */
+document.addEventListener("click", e => {
+  for (let i = 0; i < 10; i++) {
+    let h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "💖";
+    h.style.left = e.clientX + "px";
+    h.style.top = e.clientY + "px";
+    h.style.fontSize = (15 + Math.random()*20) + "px";
+    h.style.animationDuration = "1s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1000);
   }
-
-  /* 💕 HEART GENERATOR */
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "💖";
-
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (15 + Math.random() * 20) + "px";
-    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
-
-    document.getElementById("hearts").appendChild(heart);
-
-    setTimeout(() => heart.remove(), 6000);
-  }
-
-  setInterval(createHeart, 300);
+});
 </script>
 
 </body>
